@@ -1,0 +1,9 @@
+diff a/exchange/forms/ws_import.js b/exchange/forms/ws_import.js	(rejected hunks)
+@@ -146,7 +146,7 @@
+ 
+ 		plugins.scheduler.addJob(tmpFolderName, new Date(), unzipFilesToImportMap, 3000, 10, endDate, args );
+ 		
+-		return "IMPORT OK";
+ 	}
+ 		
+ 	return "IMPORT INVALID";	 
