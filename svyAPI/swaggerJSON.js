@@ -7,7 +7,7 @@ var swaggerBasicDoc = {
 	swagger:"2.0",
 	info: {
 		"version": application.getSolutionRelease().toString(),
-		"title": "i18n:servoy.swaggerDocTitle"
+		"title": "i18n:servoy.apiDocTitle"
 	},
 	host: parsedHostUrl(),
 	produces: ["application/json"],
@@ -16,7 +16,7 @@ var swaggerBasicDoc = {
 	parameters: {},
 	paths: {},
 	responses: {},
-	securityDefinitions: {},
+	//securityDefinitions: {},
 	tags:[]
 	
 	
