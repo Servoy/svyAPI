@@ -19,11 +19,10 @@ var STATUS = {
  * 
  * @properties={typeid:24,uuid:"CEFCB98D-8D4D-4FA6-BD30-E92C83C7DFEF"}
  */
-function ws_read(petId, test) {
-	application.output(JSON.stringify(arguments))
+function ws_read(petId) {
 	return {
 		  "id": petId,
-		  "name": "MyCat-11",
+		  "name": "MyCat-" + petId,
 		  "photoUrls": [],
 		  "tags": [],
 		  "status": STATUS.AVAILABLE
@@ -31,7 +30,9 @@ function ws_read(petId, test) {
 }
 
 /**
- * Multiple status values can be provided with comma separated strings
+ * Status values that need to be considered for filter
+ * 
+ * @summary Finds Pets by status
  * 
  * @param {Array<forms.pet.STATUS>} status Status values that need to be considered for filter
  * 
@@ -42,18 +43,39 @@ function ws_read(petId, test) {
  * @properties={typeid:24,uuid:"0F7E9934-92EB-47D1-8005-A6195FE34322"}
  */
 function ws_read_findByStatus(status) {
-	return {
-		  "id": 11,
-		  "name": "MyCat-11",
-		  "photoUrls": [],
-		  "tags": [],
-		  "status": STATUS.AVAILABLE
+	application.output(JSON.stringify(arguments), LOGGINGLEVEL.DEBUG);
+	if(STATUS[status] == STATUS.AVAILABLE) {
+		return {
+			  "id": 11,
+			  "name": "MyCat-11",
+			  "photoUrls": [],
+			  "tags": [],
+			  "status": STATUS.AVAILABLE
+		}
+	} else if(STATUS[status] == STATUS.PENDING) {
+		return {
+			  "id": 12,
+			  "name": "MyCat-12",
+			  "photoUrls": [],
+			  "tags": [],
+			  "status": STATUS.PENDING
+		}
+	} else {
+		return {
+			  "id": 13,
+			  "name": "MyCat-13",
+			  "photoUrls": [],
+			  "tags": [],
+			  "status": STATUS.SOLD
+		}
 	}
+
 }
 
 /**
  * Returns a single pet
  * 
+ * @summary Finds Pets by tags
  * @deprecated 
  * @param {String} name PetName of pet to return
  * 
@@ -76,6 +98,8 @@ function ws_read_findByName(name) {
 /**
  * Deletes a pet
  * 
+ * @summary Deletes a pet
+ * 
  * @param {Number} petId Pet id to delete
  * 
  * @returns {Boolean} 200 - Pet id found and succesful deleted
@@ -87,19 +111,24 @@ function ws_delete(petId) {
 }
 
 /**
- * Updates a pet in the store with form data
+ * Pet object that needs to be added to the store
+ * 
+ * @summary Update an existing pet
  * 
  * @properties={typeid:24,uuid:"BE3C00BA-0945-4EA9-B453-F0966DC1B8AF"}
  */
-function ws_update(petId, name, status) {
+function ws_update() {
 	return 'ok';
 }
 
 /**
- * Create a pet in the store with form data
+ * Pet object that needs to be added to the store
+ * 
+ * @summary Add a new pet to the store
+ * @
  * 
  * @properties={typeid:24,uuid:"BDA6E110-E532-47F3-B218-3DB02FE44406"}
  */
-function ws_create(petId, name, status) {
-	return 'ok';
+function ws_create() {
+	return true;
 }

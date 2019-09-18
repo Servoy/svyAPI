@@ -6,12 +6,12 @@
 var swaggerBasicDoc = {
 	swagger:"2.0",
 	info: {
-		"version": application.getSolutionRelease(),
+		"version": application.getSolutionRelease().toString(),
 		"title": "i18n:servoy.swaggerDocTitle"
 	},
 	host: parsedHostUrl(),
 	produces: ["application/json"],
-	schemes: (application.isInDeveloper() ? "http" : "https"),
+	schemes: (application.isInDeveloper() ?[ "http"] : ["https"]),
 	definitions: {},
 	parameters: {},
 	paths: {},
@@ -71,7 +71,7 @@ function getAllApiScopes() {
 		}).length
 	});
 	
-	/**@type {Array<{paths: String, tags:Array<*>}>} */
+	/**@type {Array<{paths: String, tags:Array<OB>}>} */
 	var comments = [];
 	var docExtractor = new scopes.doctrine.Extractor()
 	scopeNames.forEach(/**@param {String} scopeName */ function(scopeName) {
@@ -89,7 +89,7 @@ function getAllApiScopes() {
 /**
  * @private 
  * 
- * @param {Object} parsedDoc
+ * @param {{tags:Array<Object>}} parsedDoc
  * @param {String} uriName
  * @param {String} methodName
  * 
@@ -103,7 +103,6 @@ function addServoyRequirements(parsedDoc, uriName, methodName) {
 		method: "",
 		uri: "/" + uriName
 	}
-
 	var funcSplit = methodName.replace(/^ws_/, '').split('_');
 	switch (funcSplit.shift()) {
 	case 'read':
@@ -111,7 +110,7 @@ function addServoyRequirements(parsedDoc, uriName, methodName) {
 		break;
 	case 'create':
 		servoyRoute.method = 'post';
-		parsedDoc.tags.push({ title: "param", name: "body", parameter_type: "body", type: { type: "object" } });
+		parsedDoc.tags.push({ title: "param", name: "body", parameter_type: "body", schema: { type: "object"}});
 		if (!parsedDoc.tags.some(function(item) {return (item.title === 'returns' && item.description && item.description.match('200'))})) {
 			parsedDoc.tags.push({title:"returns", description:"204 - Indicate that the content in the body of the HTTP Request is missing,"});
 		}
@@ -132,7 +131,7 @@ function addServoyRequirements(parsedDoc, uriName, methodName) {
 		break;
 	case 'update':
 		servoyRoute.method = 'put';
-		parsedDoc.tags.push({ title: "param", name: "body", parameter_type: "body", type: { type: "object" } });
+		parsedDoc.tags.push({ title: "param", name: "body", parameter_type: "body", schema: { type: "object"} });
 		
 		//Add default returntypes
 		if (!parsedDoc.tags.some(function(item) {return (item.title === 'returns' && item.description && item.description.match('200'))})) {
@@ -150,9 +149,22 @@ function addServoyRequirements(parsedDoc, uriName, methodName) {
 		
 		break;
 	}
+	
 	if (funcSplit.length) {
 		servoyRoute.uri += '/' + funcSplit.join('/');
 	}
+	
+	for each (var tag in parsedDoc.tags) {
+		if(tag['title'] == 'param') {
+			if(tag['type'] && !(tag['type']['type'] && tag['type']['type'] == 'OptionalType')) {
+				if(!tag['parameter_type'] || tag['parameter_type'] == 'path') {
+					application.output(tag)
+					servoyRoute.uri += '/{' + tag['name'] +'}'
+				}
+			}
+		}
+	}
+	
 	parsedDoc.tags.unshift(servoyRoute);
 
 	//Add group tag when not defined in jsdoc
@@ -187,7 +199,7 @@ function generateSwaggerJSON() {
 
 /**
  * @private
- * @param {{title: String}} tags
+ * @param {Array<Object>} tags
  * @return {Array<String>}
  *
  * @properties={typeid:24,uuid:"83BEE7A7-3B31-476A-A345-AEB32E5D8751"}
@@ -269,6 +281,26 @@ function parseType(type, properties) {
 }
 
 /**
+ * @private 
+ * 
+ * @param {Object} schema
+ * @param {Object} properties
+ * 
+ * @return {Object}
+ *
+ * @properties={typeid:24,uuid:"4E3FD1A5-57E5-45D7-A553-6E47C3DBDF9A"}
+ */
+function parseSchema(schema, properties) {
+	if(schema) {
+		properties.schema = {};
+		for each(var item in Object.keys(schema)) {
+			properties.schema[item] = schema[item];
+		}
+	}
+	return properties;
+}
+
+/**
  * @private
  * @param comments
  * @return {{parameters: {}, tags: Array<String>}}
@@ -300,13 +332,13 @@ function fileFormat(comments) {
 						name: comments[i][j].name,
 						in: comments[i][j].parameter_type || 'path',
 						description: comments[i][j].description || '',
-						required: (comments[i][j]['type'].type && comments[i][j].type['type'] == 'OptionalType' ? false : true)
+						required: (comments[i][j]['type'] && comments[i][j]['type']['type'] && comments[i][j]['type']['type'] == 'OptionalType' ? false : true)
 					}
 					properties = parseType(comments[i][j]['type'],properties);
-//					properties.schema = comments[i][j]['type']
+					properties = parseSchema(comments[i][j]['schema'],properties);
 					params.push(properties)
 					break;
-				case 'summery':
+				case 'summary':
 					if (route) {
 						parameters[route.uri][route.method].summary = comments[i][j].description;
 					}

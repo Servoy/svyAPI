@@ -1,4 +1,5 @@
-//https://github.com/eslint/doctrine/blob/master/lib/doctrine.js
+//Partly based on: https://github.com/eslint/doctrine/blob/master/lib/doctrine.js
+
 /**
  * @protected 
  * 
