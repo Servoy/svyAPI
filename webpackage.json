@@ -1,0 +1,13 @@
+  
+{
+    "name":"svyAPI",
+    "displayName":"svyAPI",
+    "packageType": "Solution",
+    "icon": "",
+    "description": "API Doc generator for Servoy",
+    "wikiUrl": "https://github.com/Servoy/svyAPI/wiki",
+    "sourceUrl" : "https://github.com/Servoy/svyAPI",
+    "releases" : [
+        {"version":"1.0.0-b1","url":"https://github.com/Servoy/svyAPI/releases/download/v1.0.0-b1/svyAPI.servoy", "servoy-version":"2019.9"}
+     ]
+}
