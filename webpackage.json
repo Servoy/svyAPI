@@ -3,7 +3,7 @@
     "name":"svyAPI",
     "displayName":"svyAPI",
     "packageType": "Solution",
-    "icon": "",
+    "icon": "https://static.thenounproject.com/png/1676709-200.png",
     "description": "API Doc generator for Servoy",
     "wikiUrl": "https://github.com/Servoy/svyAPI/wiki",
     "sourceUrl" : "https://github.com/Servoy/svyAPI",
