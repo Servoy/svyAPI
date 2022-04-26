@@ -50,7 +50,7 @@ function Extractor() {
 	 * @public  
 	 * 
 	 * @param {String} chunk
-	 * @return {{description:String,tags:Array<{title: String, description: String}>}}
+	 * @return {{[paths]: String, description:String, tags:Array<{title: String, description: String}>}}
 	 */
 	this.transform = function(chunk) {
         const lines = chunk.toString().split(/\r?\n/);
@@ -228,6 +228,7 @@ function scanJSDocDescription() {
 }
 
 /**
+ * @return {{title: String, description: String }}
  * @properties={typeid:24,uuid:"33B2FCE4-6266-45F8-9020-EC1E8AE896BE"}
  */
 function parseTag() {
@@ -259,6 +260,7 @@ function advance() {
 }
 
 /**
+ * @return {String}
  * @properties={typeid:24,uuid:"4FFE010F-124E-4D4B-BD85-C0C6BBC8E068"}
  */
 function scanTitle() {
@@ -274,6 +276,7 @@ function scanTitle() {
 }
 
 /**
+ * @return {Number}
  * @properties={typeid:24,uuid:"27A15A68-9817-475C-8974-E99AFB536730"}
  */
 function seekContent() {
@@ -979,10 +982,5 @@ function parseType(title, last) {
 
     return type //typed.parseType(type, {startIndex: convertIndex(startIndex), range: addRange});
 }
-
-
-
-
-
 
 

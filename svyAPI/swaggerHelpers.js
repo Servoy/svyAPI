@@ -94,6 +94,8 @@ function organizeSwaggerProperties(swaggerObject, pathObject, propertyName) {
 			if(!swaggerObject.paths){
 				swaggerObject.paths = {};
 			}
+			var key = Object.keys(pathObject[propertyName][route])[0];
+			pathObject[propertyName][route][key] = sortPathObject(pathObject[propertyName][route][key]);
 			swaggerObject.paths[route] = objectMerge(
 				swaggerObject.paths[route], pathObject[propertyName][route]
 			);
@@ -101,6 +103,27 @@ function organizeSwaggerProperties(swaggerObject, pathObject, propertyName) {
 	}
 	
 	return swaggerObject;
+}
+
+/**
+ * Function to sort the pathObject to the strict swagger order
+ * @private 
+ * 
+ * @param {Object} objectToSort
+ * @return {Object}
+ * 
+ * @properties={typeid:24,uuid:"5CF7A887-F79E-429B-8E0F-1CB3DBB94E6C"}
+ */
+function sortPathObject(objectToSort) {
+	var striktOrder = ['tags','summary','description', 'operationId','consumes','produces','parameters','responses','security'];
+	var sorted = Object.keys(objectToSort).sort(function(a, b) {
+		 return striktOrder.indexOf(a) - striktOrder.indexOf(b);
+	}).reduce(function(r, k) {
+		r[k] = objectToSort[k];
+		return r;
+	}, {});
+
+	return sorted;
 }
 
 /**
@@ -124,7 +147,7 @@ function correctSwaggerKey(propertyName) {
 /**
  * @private 
  * Adds the tags property to a swagger object.
- * @param {object} conf - Flexible configuration.
+ * @param {{tag: Array, swaggerObject: {}, propertyName: String}} conf - Flexible configuration.
  *
  * @properties={typeid:24,uuid:"EAA053B6-9CAF-4D9F-A677-CFF729078382"}
  */

@@ -74,9 +74,9 @@ function isASCIIAlphanumeric(ch) {
 }
 
 /**
- * TODO generated, please specify type and doc for the params
  * @param cp
- *
+ * @return {String}
+ * 
  * @properties={typeid:24,uuid:"717B528E-8342-4388-A8B5-89B0484D81CB"}
  */
 function fromCodePoint(cp) {
@@ -87,9 +87,9 @@ function fromCodePoint(cp) {
 }
 
 /**
- * TODO generated, please specify type and doc for the params
  * @param ch
- *
+ * @return {Boolean}
+ * 
  * @properties={typeid:24,uuid:"EB2A8282-D3AF-4A47-9643-E7B77EA1D2ED"}
  */
 function isIdentifierStartES5(ch) {
@@ -97,11 +97,43 @@ function isIdentifierStartES5(ch) {
 }
 
 /**
- * TODO generated, please specify type and doc for the params
  * @param ch
- *
+ * @return {Boolean}
+ * 
  * @properties={typeid:24,uuid:"3ED26854-4342-4971-ACB5-82A8FBCAD27B"}
  */
 function isIdentifierPartES5(ch) {
     return ch < 0x80 ? IDENTIFIER_PART[ch] : ES5Regex.NonAsciiIdentifierPart.test(fromCodePoint(ch));
+}
+
+/**
+ * @param {Number} ch
+ * @return {Boolean}
+ * 
+ * @properties={typeid:24,uuid:"407B876C-D516-47DE-88F0-D342CEE46FAA"}
+ */
+function isHexDigit(ch) {
+    return 0x30 <= ch && ch <= 0x39 ||  // 0..9
+        0x61 <= ch && ch <= 0x66 ||     // a..f
+        0x41 <= ch && ch <= 0x46;       // A..F
+}
+
+/**
+ * @param {Number} ch
+ * @return {Boolean}
+ *
+ * @properties={typeid:24,uuid:"59BD8A83-9C64-4C04-9CCF-8C5F9563EC21"}
+ */
+function isOctalDigit(ch) {
+    return ch >= 0x30 && ch <= 0x37;  // 0..7
+}
+
+/**
+ * @param {Number} ch
+ * @return {Boolean}
+ *
+ * @properties={typeid:24,uuid:"161790CF-045A-4730-929A-049700649C12"}
+ */
+function isDecimalDigit(ch) {
+    return 0x30 <= ch && ch <= 0x39;  // 0..9
 }
