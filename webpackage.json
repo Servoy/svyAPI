@@ -4,6 +4,7 @@
     "displayName":"svyAPI",
     "packageType": "Solution",
     "icon": "https://static.thenounproject.com/png/1676709-200.png",
+    "invertIcon": true,
     "description": "API Doc generator for Servoy",
     "wikiUrl": "https://github.com/Servoy/svyAPI/wiki",
     "sourceUrl" : "https://github.com/Servoy/svyAPI",
